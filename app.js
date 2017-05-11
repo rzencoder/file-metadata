@@ -2,17 +2,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-
+const upload = multer({dest: 'uploads/'});
 const app = express();
 
-app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function (req, res) {
-  res.render('index')
-})
+app.post('/', upload.single('file'), function(req, res){
+   return res.json(req.file);
+});
 
-app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log('app is now listening');
 });
